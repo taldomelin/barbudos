@@ -81,7 +81,7 @@ class ServicoController extends Controller
         $servico-> nome = $request->nome;
         }
         if(isset($request->descricao)){
-        $servico-> nodescricaome = $request->descricao;
+        $servico-> descricao = $request->descricao;
         }
         if(isset($request->duracao)){
         $servico-> duracao = $request->duracao;
