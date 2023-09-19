@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ServicoFormRequest;
-use App\Http\Requests\ServicoFormRequestUpdate;
-use App\Models\servico;
+use App\Models\Servico;
 use Illuminate\Http\Request;
 
 class ServicoController extends Controller
-
 {
     public function criarServico(ServicoFormRequest $request)
     {
-        $servico = servico::create([
+        $servico = Servico::create([
             'nome' => $request->nome,
             'descricao' => $request->descricao,
             'duracao' => $request->duracao,
@@ -34,7 +32,7 @@ class ServicoController extends Controller
             ]);
         }
     }
-    public function pesquisaPorNome(Request $request)
+    public function pesquisaPorNome(ServicoFormRequest $request)
     {
         $servico = Servico::where('nome', 'like', '%' . $request->nome . '%')->get();
 
@@ -50,13 +48,14 @@ class ServicoController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+    
     public function excluir($id)
     {
         $servico = Servico::find($id);
         if (!isset($servico)) {
             return response()->json([
                 'status' => false,
-                'message' => "Serviço não encontrado."
+                'message' => "Serviço não encontrado"
             ]);
         }
 
@@ -67,14 +66,14 @@ class ServicoController extends Controller
         ]);
     }
 
-    public function update(ServicoFormRequestUpdate $request)
+    public function update(ServicoFormRequest $request)
     {
         $servico = Servico::find($request->id);
 
         if (!isset($servico)) {
             return response()->json([
                 'status' => false,
-                'message' =>  "Serviço não encontrado"
+                'message' => "Serviço não encontrado"
             ]);
         }
        
@@ -95,7 +94,7 @@ class ServicoController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "Serviço atualizado."
+            'message' => "Cadastro atualizado."
         ]);
        
     }

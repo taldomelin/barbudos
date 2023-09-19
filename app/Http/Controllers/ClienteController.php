@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClienteFormRequest;
-use App\Models\Cliente;
+use App\Models\cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -11,39 +11,37 @@ class ClienteController extends Controller
     public function criarCliente(ClienteFormRequest $request)
     {
         $cliente = Cliente::create([
-            'nome' => $request ->nome,
-            'celular' => $request ->celular,
-            'email'=> $request ->email,
-            'cpf'=> $request ->cpf,
-            'nascimento'=> $request ->nascimento,
-            'cidade'=> $request ->cidade,
-            'estado'=> $request ->estado,
-            'pais'=> $request ->pais,
-            'rua'=> $request ->rua,
-            'numero'=> $request ->numero,
-            'bairro'=> $request ->bairro,
-            'cep'=> $request ->cep,
-            'complemento'=> $request ->complemnto,
-            'password'=> $request ->password,
+            'nome' => $request->nome,
+            'celular' => $request->celular,
+            'email' => $request->email,
+            'cpf' => $request->cpf,
+            'nascimento' => $request->nascimento,
+            'cidade' => $request->cidade,
+            'estado' => $request->estado,
+            'pais' => $request->pais,
+            'rua' => $request->rua,
+            'numero' => $request->numero,
+            'bairro' => $request->bairro,
+            'cep' => $request->cep,
+            'complemento' => $request->complemento,
+            'password' => $request->password
         ]);
         return response()->json([
             "success" => true,
             "message" => "Cliente cadastrado",
             "data" => $cliente
-           
         ], 200);
         if (count($cliente) > 0) {
             return response()->json([
                 'status' => false,
-                "message" => "O nome do cliente contem mais de 200 caracteres, e não pode ser cadastrado",
+                "message" => "O nome do cliente comtem mais de 200 caracteres, e não pode ser cadastrado",
                 'data' => $cliente
             ]);
         }
-
     }
-    public function pesquisaPorNome(ClienteFormRequest $request)
+    public function pesquisaPorNome(Request $request)
     {
-        $cliente = Cliente::where('nome', 'like', '%' . $request->nome . '%')->get();
+        $cliente = cliente::where('nome', 'like', '%' . $request->nome . '%')->get();
 
         if (count($cliente) > 0) {
 
@@ -57,7 +55,7 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-    public function pesquisaCelular(ClienteFormRequest $request)
+    public function pesquisaCelular(Request $request)
     {
         $cliente = cliente::where('celular', 'like', '%' . $request->celular . '%')->get();
 
@@ -73,7 +71,7 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-    public function pesquisaCPF(ClienteFormRequest $request)
+    public function pesquisaCPF(Request $request)
     {
         $cliente = cliente::where('cpf', 'like', '%' . $request->cpf . '%')->get();
 
@@ -89,7 +87,7 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-    public function pesquisaEmail(ClienteFormRequest $request)
+    public function pesquisaEmail(Request $request)
     {
         $cliente = cliente::where('email', 'like', '%' . $request->email . '%')->get();
 
@@ -105,24 +103,22 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-
     public function excluir($id)
     {
-        $cliente = Cliente::find($id);
-        if (!isset($cliente)) {
+        $cliente = cliente::find($id);
+        if (!isset($clientee)) {
             return response()->json([
                 'status' => false,
-                'message' => "Cliente não encontrado"
+                'message' => "Serviço não encontrado"
             ]);
         }
 
         $cliente->delete();
         return response()->json([
             'status' => true,
-            'message' => "Cliente excluído com sucesso"
+            'message' => "Serviço excluído com sucesso"
         ]);
     }
-
     public function update( ClienteFormRequest $request)
     {
         $cliente = Cliente::find($request->id);
@@ -182,9 +178,8 @@ class ClienteController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "Serviço atualizado."
+            'message' => "Cliente atualizado."
         ]);
        
     }
-
 }

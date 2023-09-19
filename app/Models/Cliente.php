@@ -13,7 +13,7 @@ class Cliente extends Model
         'celular',
         'e-mail',
         'cpf',
-        'dataNascimento',
+        'nascimento',
         'cidade',
         'estado',
         'pais',
