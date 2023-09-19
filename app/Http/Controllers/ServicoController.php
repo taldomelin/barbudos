@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ServicoFormRequest;
+use App\Http\Requests\ServicoFormRequestUpdate;
 use App\Models\servico;
 use Illuminate\Http\Request;
 
@@ -55,25 +56,25 @@ class ServicoController extends Controller
         if (!isset($servico)) {
             return response()->json([
                 'status' => false,
-                'message' => "Usuário não encontrado"
+                'message' => "Serviço não encontrado."
             ]);
         }
 
         $servico->delete();
         return response()->json([
             'status' => true,
-            'message' => "Usuário excluído com sucesso"
+            'message' => "Serviço excluído com sucesso"
         ]);
     }
 
-    public function update(Request $request)
+    public function update(ServicoFormRequestUpdate $request)
     {
         $servico = Servico::find($request->id);
 
         if (!isset($servico)) {
             return response()->json([
                 'status' => false,
-                'message' => "Usuário não encontrado"
+                'message' =>  "Serviço não encontrado"
             ]);
         }
        
