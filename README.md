@@ -23,9 +23,13 @@ cd barbudos
 ```
 composer update
 ```
+6. Adicionando Migrate
+```
+php artisan migrate
+```
 4. Copiando o env. do exemplo
 ```
-copy.env.example.env
+copy .env.example .env
 ```
 5. Acessar o Visual Studio Code
 ```
