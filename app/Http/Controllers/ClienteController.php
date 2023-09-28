@@ -109,14 +109,14 @@ class ClienteController extends Controller
         if (!isset($clientee)) {
             return response()->json([
                 'status' => false,
-                'message' => "Serviço não encontrado"
+                'message' => "Cliente não encontrado"
             ]);
         }
 
         $cliente->delete();
         return response()->json([
             'status' => true,
-            'message' => "Serviço excluído com sucesso"
+            'message' => "Cliente excluído com sucesso"
         ]);
     }
     public function update( ClienteFormRequest $request)
@@ -126,7 +126,7 @@ class ClienteController extends Controller
         if (!isset($cliente)) {
             return response()->json([
                 'status' => false,
-                'message' => "Serviço não encontrado"
+                'message' => "Cliente não encontrado"
             ]);
         }
        

@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('profissionals', function (Blueprint $table) {
             $table->id();
+            $table->string('nome', 120)->nullable(false);
+            $table->string('celular', 11)->nullable(false);
+            $table->string('email', 120)->unique()->nullable(false);
+            $table->string ('cpf', )->unique()->nullable(false);
+            $table->date('nascimento', )->nullable(false);
+            $table->string('cidade', 120)->nullable(false);
+            $table->string('estado', 2)->nullable(false);
+            $table->string('pais', 80)->nullable(false);
+            $table->string('rua', 120)->nullable(false);
+            $table->string('numero', 10)->nullable(false);
+            $table->string('bairro', 100)->nullable(false);
+            $table->string('cep', 8)->nullable(false);
+            $table->string('complemento', 150)->nullable(true);
+            $table->decimal('salario',)->nullable(false);
+            $table->string('password',)->nullable(false);
             $table->timestamps();
         });
     }

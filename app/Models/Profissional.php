@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Profissional extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nome',
+        'celular',
+        'email',
+        'cpf',
+        'nascimento',
+        'cidade',
+        'estado',
+        'pais',
+        'rua',
+        'numero',
+        'bairro',
+        'cep',
+        'complemento',
+        'salario',
+        'password'
+    ];
 }
