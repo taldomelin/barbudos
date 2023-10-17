@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClienteFormRequest;
 use App\Models\cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
 {
@@ -87,6 +88,25 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+    public function esqueciSenha(Request $request)
+    {
+        $cliente = cliente::where('cpf', $request->cpf)->first();
+
+        if (isset($cliente)) {
+            $cliente->password = Hash::make($cliente->cpf);
+            $cliente->update();
+            return response()->json([
+                'status' => true,
+                'message' => 'senha redefinida.'
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'não foi possivel alterar a senha'
+        ]);
+    }
+
     public function pesquisaEmail(Request $request)
     {
         $cliente = cliente::where('email', 'like', '%' . $request->email . '%')->get();
