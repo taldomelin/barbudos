@@ -181,7 +181,7 @@ class ProfissionalController extends Controller
        
     }
 
-    public function retornar(){
+    public function retornartodosProfissionais(){
         $profissional = Profissional::all();
 
         if(count($profissional)==0){
