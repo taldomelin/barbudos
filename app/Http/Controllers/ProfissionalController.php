@@ -180,4 +180,19 @@ class ProfissionalController extends Controller
         ]);
        
     }
+
+    public function retornar(){
+        $profissional = Profissional::all();
+
+        if(count($profissional)==0){
+            return response()->json([
+                'status'=> false,
+                'message'=> "serviço nao encontrado"
+            ]);
+        }
+        return response()->json([
+            'status'=> true,
+            'data' => $profissional
+        ]);
+       }
 }

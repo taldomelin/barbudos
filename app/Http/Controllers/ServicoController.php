@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ServicoFormRequest;
-use App\Models\Servico;
+use App\Http\Requests\ServicoFormRequestUpdate;
+use App\Models\servico;
+use App\Models\Servico as ModelsServico;
 use Illuminate\Http\Request;
 
 class ServicoController extends Controller
@@ -32,7 +34,7 @@ class ServicoController extends Controller
             ]);
         }
     }
-    public function pesquisaPorNome(ServicoFormRequest $request)
+    public function pesquisaPorNome(Request $request)
     {
         $servico = Servico::where('nome', 'like', '%' . $request->nome . '%')->get();
 
@@ -48,7 +50,22 @@ class ServicoController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-    
+    public function pesquisaPorDescricao(Request $request)
+    {
+        $servico = Servico::where('descricao', 'like', '%' . $request->descricao . '%')->get();
+
+        if (count($servico) > 0) {
+
+            return response()->json([
+                'status' => true,
+                'data' => $servico
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Não há resultado para pesquisa.'
+        ]);
+    }
     public function excluir($id)
     {
         $servico = Servico::find($id);
@@ -66,7 +83,7 @@ class ServicoController extends Controller
         ]);
     }
 
-    public function update(ServicoFormRequest $request)
+    public function update(ServicoFormRequestUpdate $request)
     {
         $servico = Servico::find($request->id);
 
@@ -76,7 +93,7 @@ class ServicoController extends Controller
                 'message' => "Serviço não encontrado"
             ]);
         }
-       
+        
         if(isset($request->nome)){
         $servico-> nome = $request->nome;
         }
@@ -94,8 +111,22 @@ class ServicoController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "Cadastro atualizado."
+            'message' => "Serviço atualizado."
         ]);
-       
+        
     }
+    public function retornarTodos(){
+        $servico = Servico::all();
+
+        if(count($servico)==0){
+            return response()->json([
+                'status'=> false,
+                'message'=> "serviço nao encontrado"
+            ]);
+        }
+        return response()->json([
+            'status'=> true,
+            'data' => $servico
+        ]);
+       }
 }
