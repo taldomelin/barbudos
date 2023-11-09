@@ -123,6 +123,22 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+    public function pesquisaId($id)
+    {
+        $cliente = Cliente::find($id);
+        
+        if ($cliente == null) {
+            return response()->json([
+                'status' => false,
+                'message' => "cliente não encontrada"
+            ]);
+        }
+        return response()->json([
+            'status' => true,
+            'data' => $cliente
+        ]);
+        
+    }
     public function excluir($id)
     {
         $cliente = cliente::find($id);
