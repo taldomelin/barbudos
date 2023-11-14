@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ServicoFormRequest;
 use App\Http\Requests\ServicoFormRequestUpdate;
+use App\Models\Cliente;
 use App\Models\servico;
 use App\Models\Servico as ModelsServico;
 use Illuminate\Http\Request;
@@ -66,9 +67,10 @@ class ServicoController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+
     public function pesquisarPorId($id)
     {
-        $usuario = servico::find($id);
+        $usuario = Cliente::find($id);
 
         if ($usuario == null) {
             return response()->json([
@@ -81,6 +83,7 @@ class ServicoController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+    
     public function excluir($id)
     {
         $servico = Servico::find($id);

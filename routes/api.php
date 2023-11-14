@@ -24,6 +24,7 @@ Route::post('nomeserviço',[ServicoController::class, 'pesquisaPorNome']);
 Route::delete('deletar/{id}',[ServicoController::class, 'excluir']);
 Route::put('atualizacao', [ServicoController::class, 'update']);
 Route::get('retornarTodos', [ServicoController::class, 'retornarTodos']);
+Route::post('noomes', [ServicoController::class, 'pesquisaPorNome']);
 Route::get('pesquisaPorId/{id}', [ClienteController::class, 'pesquisaPorId']);
 //cliente
 Route::post('criarCliente', [ClienteController::class, 'criarCliente']);
