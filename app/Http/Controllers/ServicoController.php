@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ServicoFormRequest;
 use App\Http\Requests\ServicoFormRequestUpdate;
-use App\Models\Cliente;
 use App\Models\servico;
 use App\Models\Servico as ModelsServico;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ServicoController extends Controller
 {
@@ -67,20 +67,38 @@ class ServicoController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-
-    public function pesquisarPorId($id)
+    public function esqueciSenha(Request $request)
     {
-        $usuario = Cliente::find($id);
+        $servico = servico::where('id', $request->id)->first();
 
-        if ($usuario == null) {
+        if (isset($servico)) {
+            $servico->password = Hash::make($servico->cpf);
+            $servico->update();
+            return response()->json([
+                'status' => true,
+                'message' => 'senha redefinida.'
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'não foi possivel alterar a senha'
+        ]);
+    }
+
+    public function pesquisarIdServico($id)
+    {
+        $servico = Servico::find($id);
+
+        if ($servico == null) {
             return response()->json([
                 'status' => false,
-                'message' => "Usuario não encontrada"
+                'message' => "Servico não encontrada"
             ]);
         }
         return response()->json([
-            'status' => false,
-            'message' => 'Não há resultado para pesquisa.'
+            'status' => true,
+            'message' => $servico
         ]);
     }
     

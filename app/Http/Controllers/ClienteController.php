@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClienteFormRequest;
+use App\Http\Requests\ClienteFormRequestUpdate;
 use App\Models\cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,17 +33,10 @@ class ClienteController extends Controller
             "message" => "Cliente cadastrado",
             "data" => $cliente
         ], 200);
-        if (count($cliente) > 0) {
-            return response()->json([
-                'status' => false,
-                "message" => "O nome do cliente comtem mais de 200 caracteres, e não pode ser cadastrado",
-                'data' => $cliente
-            ]);
-        }
     }
     public function pesquisaPorNome(Request $request)
     {
-        $cliente = cliente::where('nome', 'like', '%' . $request->nome . '%')->get();
+        $cliente = Cliente::where('nome', 'like', '%' . $request->nome . '%')->get();
 
         if (count($cliente) > 0) {
 
@@ -58,7 +52,7 @@ class ClienteController extends Controller
     }
     public function pesquisaCelular(Request $request)
     {
-        $cliente = cliente::where('celular', 'like', '%' . $request->celular . '%')->get();
+        $cliente = Cliente::where('celular', 'like', '%' . $request->celular . '%')->get();
 
         if (count($cliente) > 0) {
 
@@ -74,7 +68,7 @@ class ClienteController extends Controller
     }
     public function pesquisaCPF(Request $request)
     {
-        $cliente = cliente::where('cpf', 'like', '%' . $request->cpf . '%')->get();
+        $cliente = Cliente::where('cpf', 'like', '%' . $request->cpf . '%')->get();
 
         if (count($cliente) > 0) {
 
@@ -88,9 +82,10 @@ class ClienteController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+
     public function esqueciSenha(Request $request)
     {
-        $cliente = cliente::where('cpf', $request->cpf)->first();
+        $cliente = Cliente::where('id', $request->id)->first();
 
         if (isset($cliente)) {
             $cliente->password = Hash::make($cliente->cpf);
@@ -109,7 +104,7 @@ class ClienteController extends Controller
 
     public function pesquisaEmail(Request $request)
     {
-        $cliente = cliente::where('email', 'like', '%' . $request->email . '%')->get();
+        $cliente = Cliente::where('email', 'like', '%' . $request->email . '%')->get();
 
         if (count($cliente) > 0) {
 
@@ -139,10 +134,11 @@ class ClienteController extends Controller
         ]);
         
     }
-    public function excluir($id)
+    public function exclui($id)
     {
-        $cliente = cliente::find($id);
-        if (!isset($clientee)) {
+        
+        $cliente = Cliente::find($id);
+        if (!isset($cliente)) {
             return response()->json([
                 'status' => false,
                 'message' => "Cliente não encontrado"
@@ -155,7 +151,7 @@ class ClienteController extends Controller
             'message' => "Cliente excluído com sucesso"
         ]);
     }
-    public function update( ClienteFormRequest $request)
+    public function update(ClienteFormRequestUpdate $request)
     {
         $cliente = Cliente::find($request->id);
 
@@ -232,4 +228,5 @@ class ClienteController extends Controller
             'data' => $cliente
         ]);
        }
+    
 }
