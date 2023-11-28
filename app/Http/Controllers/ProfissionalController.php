@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfissionalFormRequest;
+use App\Http\Requests\ProfissionalFormRequestUpdate;
 use App\Models\Profissional;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfissionalController extends Controller
+
 {
+   
     public function criarProfissional(ProfissionalFormRequest $request)
     {
-        $profissional = Profissional::create([
+        $profissional = profissional::create([
             'nome' => $request->nome,
             'celular' => $request->celular,
             'email' => $request->email,
@@ -24,16 +28,24 @@ class ProfissionalController extends Controller
             'bairro' => $request->bairro,
             'cep' => $request->cep,
             'complemento' => $request->complemento,
-            'salario' => $request->salario,
-            'password' => $request->password
+            'password' => $request->password,
+            'salario' => $request->salario
         ]);
         return response()->json([
             "success" => true,
-            "message" => "Profissional cadastrado",
+            "message" => "profissional cadastrado",
             "data" => $profissional
         ], 200);
-        
+        if (count($profissional) > 0) {
+            return response()->json([
+                'status' => false,
+                "message" => "O nome do profissional comtem mais de 200 caracteres, e não pode ser cadastrado",
+                'data' => $profissional
+            ]);
+        }
+
     }
+    
     public function pesquisaPorNome(Request $request)
     {
         $profissional = profissional::where('nome', 'like', '%' . $request->nome . '%')->get();
@@ -50,9 +62,10 @@ class ProfissionalController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
+    
     public function pesquisaCelular(Request $request)
     {
-        $profissional = profissional::where('celular', 'like', '%' . $request->celular . '%')->get();
+        $profissional = Profissional::where('celular', 'like', '%' . $request->celular . '%')->get();
 
         if (count($profissional) > 0) {
 
@@ -65,6 +78,23 @@ class ProfissionalController extends Controller
             'status' => false,
             'message' => 'Não há resultado para pesquisa.'
         ]);
+    }
+    
+    public function pesquisaPorId($id)
+    {
+        $profissional = Profissional::find($id);
+        
+        if ($profissional == null) {
+            return response()->json([
+                'status' => false,
+                'message' => "profissional não encontrada"
+            ]);
+        }
+        return response()->json([
+            'status' => true,
+            'data' => $profissional
+        ]);
+        
     }
     public function pesquisaCPF(Request $request)
     {
@@ -98,30 +128,31 @@ class ProfissionalController extends Controller
             'message' => 'Não há resultado para pesquisa.'
         ]);
     }
-    public function excluir($id)
+    public function exclui($id)
     {
+        
         $profissional = profissional::find($id);
         if (!isset($profissional)) {
             return response()->json([
                 'status' => false,
-                'message' => "Profissional não encontrado"
+                'message' => "profissional não encontrado"
             ]);
         }
 
         $profissional->delete();
         return response()->json([
             'status' => true,
-            'message' => "Profissional excluído com sucesso"
+            'message' => "profissional excluído com sucesso"
         ]);
     }
-    public function update( ProfissionalFormRequest $request)
+    public function update( ProfissionalFormRequestUpdate $request)
     {
         $profissional = profissional::find($request->id);
 
         if (!isset($profissional)) {
             return response()->json([
                 'status' => false,
-                'message' => "Serviço não encontrado"
+                'message' => "profissional não encontrado"
             ]);
         }
        
@@ -164,11 +195,11 @@ class ProfissionalController extends Controller
         if(isset($request->complemento)){
             $profissional-> complemento = $request->complemneto;
         }
-        if(isset($request->salario)){
-            $profissional-> salario = $request->salario;
-        }
         if(isset($request->password)){
             $profissional-> password = $request->password;
+        }
+        if(isset($request->salario)){
+            $profissional-> salario = $request->salario;
         }
 
 
@@ -176,18 +207,17 @@ class ProfissionalController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "Profissional atualizado."
+            'message' => "profissional atualizado."
         ]);
        
     }
-
     public function retornartodosProfissionais(){
-        $profissional = Profissional::all();
+        $profissional = profissional::all();
 
         if(count($profissional)==0){
             return response()->json([
                 'status'=> false,
-                'message'=> "serviço nao encontrado"
+                'message'=> "profissionai nao encontrado"
             ]);
         }
         return response()->json([
@@ -195,4 +225,17 @@ class ProfissionalController extends Controller
             'data' => $profissional
         ]);
        }
+       public function esqueciSenha(Request $request)
+       {
+           $profissional = Profissional::where('id', $request->id)->first();
+   
+           if (isset($profissional)) {
+               $profissional->password = Hash::make($profissional->cpf);
+               $profissional->update();
+               return response()->json([
+                   'status' => true,
+                   'message' => 'senha redefinida.'
+               ]);
+           }
+}
 }
